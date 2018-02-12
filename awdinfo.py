@@ -110,8 +110,14 @@ if __name__ == '__main__':
         
         while True:
             print("Feed")
-            update_feed_messages()
+            try:
+                update_feed_messages()
+            except:
+                print("Error")
             print("Loop")
 
-            time.sleep(60 * 5)
+            n = 25
+            for i in xrange(0, n):
+                time.sleep(300 // n)
+                print("Wait {}..".format(i))
             
