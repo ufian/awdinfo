@@ -13,13 +13,21 @@ import telepot
 from telepot.loop import MessageLoop
 
 import config
-from model import User, Message
+from model import User, Message, Status
 import feedparser
 
 import bs4
 
 class BotWrapper():
     BOT = None
+    
+def get_status():
+    status = Status.objects.first()
+    if status is None:
+        status = Status(status="Nope")
+        status.save()
+        
+    return status
 
 def handle_message(msg):
     content_type, chat_type, chat_id = telepot.glance(msg)
@@ -46,7 +54,9 @@ def handle_message(msg):
         else:
             user.status = True
             BotWrapper.BOT.sendMessage(chat_id, "Подписка остановлена")
-            
+    elif text == '/status':
+         BotWrapper.BOT.sendMessage(chat_id, get_status().status)
+
 
 def get_connect():
     return me.connect(
@@ -109,15 +119,22 @@ if __name__ == '__main__':
         ml.run_as_thread()
         
         while True:
-            print("Feed")
+            status = get_status()
+            
+            def printstatus(message):
+                status.status = message
+                status.save()
+                print(message)
+
+            printstatus("Feed")
             try:
                 update_feed_messages()
             except:
-                print("Error")
-            print("Loop")
+                printstatus("Error")
+            printstatus("Loop")
 
             n = 25
             for i in xrange(0, n):
                 time.sleep(300 // n)
-                print("Wait {}..".format(i))
+                printstatus("Wait {}..".format(i))
             

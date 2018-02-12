@@ -18,3 +18,8 @@ class Message(me.Document):
     message_id = me.StringField(required=True)
     text = me.StringField(required=True)
     date = me.DateTimeField(required=True)
+    
+class Status(me.Document):
+    meta = {'collection': 'info'}
+    
+    status = me.StringField(required=True)
