@@ -102,13 +102,13 @@ def update_feed_messages():
                 date=datetime.fromtimestamp(mktime(datestruct))
             )
             db_post.save()
-        
-        if 'мест нет' in text:
+        text_lower = text.lower()
+        if 'мест нет' in text_lower:
             continue
             
-        if 'нет мест' in text:
-            pos = text.index('нет мест')
-            if pos == 0 or not('а' <= text[pos-1].lower() <= 'я'):
+        if 'нет мест' in text_lower:
+            pos = text_lower.index('нет мест')
+            if pos == 0 or not('а' <= text_lower[pos-1] <= 'я'):
                 continue
 
         for user in User.objects.filter(status=True):
