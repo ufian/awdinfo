@@ -105,7 +105,11 @@ def update_feed_messages():
         
         if 'мест нет' in text:
             continue
-
+            
+        if 'нет мест' in text:
+            pos = text.index('нет мест')
+            if pos == 0 or not('а' <= text[pos-1].lower() <= 'я'):
+                continue
 
         for user in User.objects.filter(status=True):
             BotWrapper.BOT.sendMessage(user.user_id, "{0}: {1}".format(db_post.date + timedelta(hours=3), text))
