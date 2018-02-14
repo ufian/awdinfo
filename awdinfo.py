@@ -52,7 +52,7 @@ def handle_message(msg):
         if not user.status:
             BotWrapper.BOT.sendMessage(chat_id, "Подписка не оформлена")
         else:
-            user.status = True
+            user.status = False
             BotWrapper.BOT.sendMessage(chat_id, "Подписка остановлена")
     elif text == '/status':
          BotWrapper.BOT.sendMessage(chat_id, get_status().status)
