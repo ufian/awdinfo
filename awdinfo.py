@@ -107,7 +107,12 @@ def update_feed_messages():
         text_lower = text.lower()
         if 'мест нет' in text_lower:
             continue
-            
+
+        if 'нет доступных мест' in text_lower:
+            pos = text_lower.index('нет доступных мест')
+            if pos == 0 or not('а' <= text_lower[pos-1] <= 'я'):
+                continue
+
         if 'нет мест' in text_lower:
             pos = text_lower.index('нет мест')
             if pos == 0 or not('а' <= text_lower[pos-1] <= 'я'):
