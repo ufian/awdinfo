@@ -30,35 +30,39 @@ def get_status():
     return status
 
 def handle_message(msg):
-    content_type, chat_type, chat_id = telepot.glance(msg)
-    
-    text = msg.get('text')
-    if text is None:
-        return
-
-    user = User.objects.filter(user_id=chat_id).first()
-    if user is None:
-        user = User(user_id=chat_id, status=True)
-        user.save()
-
-    if text == '/start':
-        if user.status:
-            BotWrapper.BOT.sendMessage(chat_id, "Подписка оформлена")
-        else:
-            user.status = True
-            user.save()
-            BotWrapper.BOT.sendMessage(chat_id, "Подписка востановлена")
+    try:
+        content_type, chat_type, chat_id = telepot.glance(msg)
         
-    elif text == '/stop':
-        if not user.status:
-            BotWrapper.BOT.sendMessage(chat_id, "Подписка не оформлена")
-        else:
-            user.status = False
+        text = msg.get('text')
+        if text is None:
+            return
+    
+        user = User.objects.filter(user_id=chat_id).first()
+        if user is None:
+            user = User(user_id=chat_id, status=True)
             user.save()
-            BotWrapper.BOT.sendMessage(chat_id, "Подписка остановлена")
-    elif text == '/status':
-         BotWrapper.BOT.sendMessage(chat_id, get_status().status)
-
+    
+        if text == '/start':
+            if user.status:
+                BotWrapper.BOT.sendMessage(chat_id, "Подписка оформлена")
+            else:
+                user.status = True
+                user.save()
+                BotWrapper.BOT.sendMessage(chat_id, "Подписка востановлена")
+            
+        elif text == '/stop':
+            if not user.status:
+                BotWrapper.BOT.sendMessage(chat_id, "Подписка не оформлена")
+            else:
+                user.status = False
+                user.save()
+                BotWrapper.BOT.sendMessage(chat_id, "Подписка остановлена")
+        elif text == '/status':
+             BotWrapper.BOT.sendMessage(chat_id, get_status().status)
+        elif text == '/info':
+             BotWrapper.BOT.sendMessage(chat_id, "Подписано {} аккаунтов".format(User.objects.count()))
+    except:
+        pass
 
 def get_connect():
     return me.connect(
