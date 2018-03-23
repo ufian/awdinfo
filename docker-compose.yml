@@ -8,6 +8,7 @@ networks:
 services:
   awdinfo:
     image: ufian/telegram
+    restart: always
     command: python /src/awdinfo.py
     volumes:
     - .:/src
