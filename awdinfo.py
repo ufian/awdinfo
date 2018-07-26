@@ -109,7 +109,17 @@ def update_feed_messages():
             )
             db_post.save()
         text_lower = text.lower()
+        
+        for i in range(0, 10):
+            text_lower = text_lower.replace('  ', ' ')
+        
         if 'мест нет' in text_lower:
+            continue
+
+        if 'записи нет' in text_lower or 'нет записи' in text_lower:
+            continue
+
+        if 'пусто' in text_lower and len(text_lower) < 20:
             continue
 
         if 'нет доступных мест' in text_lower:
@@ -121,6 +131,7 @@ def update_feed_messages():
             pos = text_lower.index('нет мест')
             if pos == 0 or not('а' <= text_lower[pos-1] <= 'я'):
                 continue
+                
 
         for user in User.objects.filter(status=True):
             BotWrapper.BOT.sendMessage(user.user_id, "{0}: {1}".format(db_post.date + timedelta(hours=3), text))
