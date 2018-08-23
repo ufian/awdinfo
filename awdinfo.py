@@ -161,7 +161,8 @@ if __name__ == '__main__':
             printstatus("Loop")
 
             n = 25
+            waittime = random.randint(50, 180)
             for i in xrange(0, n):
-                time.sleep(300 // n)
+                time.sleep(waittime // n)
                 printstatus("Wait {}..".format(i))
             
