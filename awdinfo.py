@@ -10,6 +10,7 @@ from datetime import datetime, timedelta
 
 import mongoengine as me
 import telepot
+import random
 from telepot.loop import MessageLoop
 
 import config
@@ -73,14 +74,14 @@ def get_connect():
     )
 
 def update_feed_messages():
-    url = "http://forum.awd.ru/feed.php?f=326&t=326384"
+    url = "http://forum.awd.ru/feed.php?f=326&t=326384&rand={0}".format(random.randint(0, 1000000))
     feed = feedparser.parse(url)
     entries = feed.get('entries')
     
     if entries is None or not isinstance(entries, list):
         return
     
-    for post in entries:
+    for post in entries[::-1]:
         post_id = post.get('id')
         content = post.get('content', [{}])
         if len(content) == 0:
