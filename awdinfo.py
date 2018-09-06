@@ -121,6 +121,12 @@ def update_feed_messages():
 
         if 'пусто' in text_lower and len(text_lower) < 20:
             continue
+            
+        if 'helpvisaus' in text_lower:
+            continue
+            
+        if 'записи на собеседование нет' in text_lower:
+            continue
 
         if 'нет доступных мест' in text_lower:
             pos = text_lower.index('нет доступных мест')
