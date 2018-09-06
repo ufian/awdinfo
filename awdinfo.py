@@ -10,6 +10,7 @@ from datetime import datetime, timedelta
 
 import mongoengine as me
 import telepot
+import random
 from telepot.loop import MessageLoop
 
 import config
@@ -73,14 +74,14 @@ def get_connect():
     )
 
 def update_feed_messages():
-    url = "http://forum.awd.ru/feed.php?f=326&t=326384"
+    url = "http://forum.awd.ru/feed.php?f=326&t=326384&rand={0}".format(random.randint(0, 1000000))
     feed = feedparser.parse(url)
     entries = feed.get('entries')
     
     if entries is None or not isinstance(entries, list):
         return
     
-    for post in entries:
+    for post in entries[::-1]:
         post_id = post.get('id')
         content = post.get('content', [{}])
         if len(content) == 0:
@@ -140,7 +141,7 @@ def update_feed_messages():
                 
 
         for user in User.objects.filter(status=True):
-            BotWrapper.BOT.sendMessage(user.user_id, "{0}: {1}".format(db_post.date + timedelta(hours=3), text))
+            BotWrapper.BOT.sendMessage(user.user_id, "{0}: {1}".format(db_post.date + timedelta(hours=3), text), disable_notification=(user.user_id < 0))
     
 
 if __name__ == '__main__':
@@ -166,7 +167,8 @@ if __name__ == '__main__':
             printstatus("Loop")
 
             n = 25
+            waittime = random.randint(50, 180)
             for i in xrange(0, n):
-                time.sleep(300 // n)
+                time.sleep(waittime // n)
                 printstatus("Wait {}..".format(i))
             
