@@ -126,6 +126,9 @@ def update_feed_messages():
         if 'helpvisaus' in text_lower:
             continue
             
+        if ('помогу' in text_lower or 'поможем' in text_lower) and 'записаться' in text_lower:
+            continue
+            
         if 'записи на собеседование нет' in text_lower:
             continue
 
