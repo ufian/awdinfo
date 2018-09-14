@@ -144,7 +144,7 @@ def update_feed_messages():
                 
 
         for user in User.objects.filter(status=True):
-            BotWrapper.BOT.sendMessage(user.user_id, "{0}: {1}".format(db_post.date + timedelta(hours=3), text), disable_notification=(user.user_id < 0))
+            BotWrapper.BOT.sendMessage(user.user_id, "{0}: {1}".format(db_post.date + timedelta(hours=3), text)) #, disable_notification=(user.user_id < 0))
     
 
 if __name__ == '__main__':
