@@ -74,7 +74,7 @@ def get_connect():
     )
 
 def update_feed_messages():
-    url = "http://forum.awd.ru/feed.php?f=326&t=326384&rand={0}".format(random.randint(0, 1000000))
+    url = "https://forum.awd.ru/feed.php?f=326&t=326384&rand={0}".format(random.randint(0, 1000000))
     feed = feedparser.parse(url)
     entries = feed.get('entries')
     
