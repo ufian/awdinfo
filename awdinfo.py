@@ -132,6 +132,12 @@ def update_feed_messages():
         if 'записи на собеседование нет' in text_lower:
             continue
 
+        if 'сайт - нет' in text_lower:
+            continue
+
+        if 'телефон - нет' in text_lower:
+            continue
+
         if 'нет доступных мест' in text_lower:
             pos = text_lower.index('нет доступных мест')
             if pos == 0 or not('а' <= text_lower[pos-1] <= 'я'):
